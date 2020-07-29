@@ -1,19 +1,32 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 import { Container, Messages, InputWrapper, Input, InputIcon } from "./styles";
-import ChannelMessage from "../ChannelMessage";
+import ChannelMessage, { Mention } from "../ChannelMessage";
 
 const ChannelData: React.FC = () => {
+  const messagesRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+
+  useEffect(() => {
+    const div = messagesRef.current;
+
+    if (div) {
+      div.scrollTop = div.scrollHeight;
+    }
+  }, [messagesRef]);
+
   return (
     <Container>
-      <Messages>
-        <ChannelMessage
-          author="Erick Lascalla"
-          date="28/07/2020"
-          content="Testando as mensagens"
-        />
+      <Messages ref={messagesRef}>
+        {Array.from(Array(15).keys()).map((i) => (
+          <ChannelMessage
+            key={i}
+            author="Erick Lascalla"
+            date="28/07/2020"
+            content="Testando as mensagens"
+          />
+        ))}
 
-        {/* <ChannelMessage
+        <ChannelMessage
           author="Davison Oliveira"
           date="28/07/2020"
           content={
@@ -24,7 +37,7 @@ const ChannelData: React.FC = () => {
           }
           hasMention
           isBot
-        /> */}
+        />
       </Messages>
 
       <InputWrapper>
